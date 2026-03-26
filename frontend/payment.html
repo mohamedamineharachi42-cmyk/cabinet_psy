@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement - Cabinet de Psychothérapie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .payment-container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .payment-header h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2d3748;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .amount small {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+        
+        #card-element {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 20px 0;
+            background: #f7fafc;
+        }
+        
+        #card-errors {
+            color: #f56565;
+            font-size: 0.9rem;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .btn-pay {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-pay:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+        }
+        
+        .btn-pay:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 20px;
+            background: #c6f6d5;
+            color: #22543d;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 20px;
+            background: #fed7d7;
+            color: #9b2c2c;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .back-home:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <i class="fas fa-brain" style="font-size: 3rem; color: #667eea;"></i>
+            <h2>Paiement consultation</h2>
+            <p>Dr. Martin - Psychothérapeute</p>
+        </div>
+        
+        <div class="amount">
+            60,00 €
+            <small>TTC</small>
+        </div>
+        
+        <div class="info-box">
+            <i class="fas fa-lock"></i> Paiement 100% sécurisé par Stripe
+        </div>
+        
+        <div id="card-element"></div>
+        <div id="card-errors"></div>
+        
+        <button id="payButton" class="btn-pay">
+            <i class="fas fa-credit-card"></i> Payer 60€
+        </button>
+        
+        <div id="successMessage" class="success-message">
+            <i class="fas fa-check-circle"></i> Paiement effectué avec succès !<br>
+            Un email de confirmation vous a été envoyé.
+        </div>
+        
+        <div id="errorMessage" class="error-message">
+            <i class="fas fa-exclamation-circle"></i> Erreur de paiement<br>
+            Veuillez réessayer ou contacter le support.
+        </div>
+        
+        <a href="/" class="back-home">← Retour à l'accueil</a>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        const STRIPE_PUBLIC_KEY = 'pk_test_votre_cle'; // À remplacer par votre clé Stripe
+        
+        let stripe = null;
+        let elements = null;
+        let cardElement = null;
+        
+        // Récupérer l'ID du rendez-vous depuis l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const appointmentId = urlParams.get('id');
+        
+        if (!appointmentId) {
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('errorMessage').innerHTML = '<i class="fas fa-exclamation-circle"></i> Aucun rendez-vous trouvé';
+            document.getElementById('payButton').disabled = true;
+        }
+        
+        // Initialiser Stripe
+        async function initStripe() {
+            stripe = Stripe(STRIPE_PUBLIC_KEY);
+            elements = stripe.elements();
+            cardElement = elements.create('card', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#32325d',
+                        '::placeholder': { color: '#a0aec0' }
+                    }
+                }
+            });
+            cardElement.mount('#card-element');
+            
+            cardElement.on('change', ({error}) => {
+                const errorDiv = document.getElementById('card-errors');
+                if (error) {
+                    errorDiv.textContent = error.message;
+                } else {
+                    errorDiv.textContent = '';
+                }
+            });
+        }
+        
+        // Gérer le paiement
+        async function handlePayment() {
+            const payButton = document.getElementById('payButton');
+            const originalText = payButton.innerHTML;
+            payButton.innerHTML = 'Traitement en cours... <span class="loading"></span>';
+            payButton.disabled = true;
+            
+            try {
+                // 1. Créer l'intention de paiement
+                const response = await fetch(`${API_URL}/create-payment-intent`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        appointment_id: appointmentId, 
+                        amount: 6000 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Erreur de création du paiement');
+                }
+                
+                // 2. Confirmer le paiement avec Stripe
+                const { error, paymentIntent } = await stripe.confirmCardPayment(
+                    data.client_secret,
+                    { payment_method: { card: cardElement } }
+                );
+                
+                if (error) {
+                    throw new Error(error.message);
+                }
+                
+                // 3. Paiement réussi - informer le backend
+                await fetch(`${API_URL}/payment-success`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ payment_intent_id: paymentIntent.id })
+                });
+                
+                // 4. Afficher le succès
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('payButton').style.display = 'none';
+                cardElement.clear();
+                
+                // Redirection après 3 secondes
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Erreur paiement:', error);
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorMessage').innerHTML = `<i class="fas fa-exclamation-circle"></i> ${error.message}`;
+                payButton.innerHTML = originalText;
+                payButton.disabled = false;
+                
+                setTimeout(() => {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // Initialiser la page
+        initStripe();
+        
+        // Bouton de paiement
+        document.getElementById('payButton').addEventListener('click', handlePayment);
+    </script>
+</body>
+</html>

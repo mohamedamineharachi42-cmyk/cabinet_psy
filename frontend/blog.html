@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog de psychothérapie - Articles sur la santé mentale, l'anxiété, la gestion du stress et le bien-être.">
+    <title>Blog - Dr. Martin | Articles de psychothérapie</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Blog Page Specific Styles */
+        .blog-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 100px 0 60px;
+            text-align: center;
+        }
+
+        .blog-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin: 60px 0;
+        }
+
+        .articles-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 25px;
+        }
+
+        .article-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .article-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .article-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .article-title a:hover {
+            color: var(--primary);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .article-meta i {
+            margin-right: 5px;
+        }
+
+        .article-excerpt {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .read-more {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .read-more:hover {
+            gap: 10px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-widget {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .widget-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
+        .search-box button {
+            padding: 10px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-list li {
+            margin-bottom: 10px;
+        }
+
+        .category-list a {
+            color: var(--gray);
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            transition: color 0.3s;
+        }
+
+        .category-list a:hover {
+            color: var(--primary);
+        }
+
+        .popular-post {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .popular-post img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .popular-post h4 {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .popular-post h4 a {
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .popular-post h4 a:hover {
+            color: var(--primary);
+        }
+
+        .popular-post p {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .tags-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            padding: 5px 12px;
+            background: var(--light);
+            border-radius: 20px;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .tag:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .newsletter-form input {
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        /* Single Article View */
+        .single-article {
+            display: none;
+        }
+
+        .single-article.active {
+            display: block;
+        }
+
+        .back-to-blog {
+            margin-bottom: 30px;
+        }
+
+        .article-full-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .article-full-content h1 {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+
+        .article-full-content h2 {
+            margin: 30px 0 15px;
+            color: var(--dark);
+        }
+
+        .article-full-content h3 {
+            margin: 20px 0 10px;
+        }
+
+        .article-full-content p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+
+        .article-full-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: var(--gray);
+        }
+
+        .share-buttons {
+            margin: 30px 0;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .share-buttons a {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 8px 15px;
+            background: var(--light);
+            border-radius: 20px;
+            color: var(--gray);
+            text-decoration: none;
+        }
+
+        .share-buttons a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .blog-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+            
+            .article-full-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">Dr. Martin</a>
+                <span class="badge">Psychothérapeute</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="about.html">À propos</a></li>
+                <li><a href="appointments.html">Rendez-vous</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <section class="blog-hero">
+        <div class="container">
+            <h1>Blog & Articles</h1>
+            <p>Conseils, réflexions et ressources pour votre bien-être mental</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="blog-container">
+            <!-- Articles List View -->
+            <div id="articlesList" class="articles-list">
+                <div class="articles-grid" id="articlesGrid"></div>
+                <div class="pagination" id="pagination" style="display: flex; justify-content: center; gap: 10px; margin-top: 40px;"></div>
+            </div>
+
+            <!-- Single Article View -->
+            <div id="singleArticle" class="single-article">
+                <div class="back-to-blog">
+                    <button class="btn btn-outline" onclick="showArticlesList()">
+                        <i class="fas fa-arrow-left"></i> Retour aux articles
+                    </button>
+                </div>
+                <div id="articleFullContent"></div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Rechercher</h3>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Rechercher un article...">
+                        <button onclick="searchArticles()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Catégories</h3>
+                    <ul class="category-list" id="categoryList"></ul>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Articles populaires</h3>
+                    <div id="popularPosts"></div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Tags populaires</h3>
+                    <div class="tags-cloud" id="tagsCloud"></div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Newsletter</h3>
+                    <p>Recevez mes articles par email</p>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Votre email" required>
+                        <button type="submit" class="btn btn-primary">S'abonner</button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Dr. Martin</h3>
+                    <p>Psychothérapeute depuis 15 ans, je vous accueille dans un cadre bienveillant et confidentiel.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 rue de la Paix, 75001 Paris</p>
+                    <p><i class="fas fa-phone"></i> 01 23 45 67 89</p>
+                    <p><i class="fas fa-envelope"></i> contact@cabinet-psy.fr</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Horaires</h3>
+                    <p>Lundi - Vendredi: 9h - 20h</p>
+                    <p>Samedi: 9h - 13h</p>
+                    <p>Dimanche: Fermé</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Blog Data
+        const articles = [
+            {
+                id: 1,
+                title: "Comprendre et gérer l'anxiété au quotidien",
+                excerpt: "L'anxiété est une réaction normale du corps, mais quand elle devient envahissante, elle peut affecter notre qualité de vie. Découvrez des stratégies concrètes pour l'apprivoiser.",
+                content: `
+                    <h2>Qu'est-ce que l'anxiété ?</h2>
+                    <p>L'anxiété est une émotion naturelle que nous ressentons tous face à une situation perçue comme menaçante. Elle se manifeste par des symptômes physiques (palpitations, sueurs, tensions musculaires

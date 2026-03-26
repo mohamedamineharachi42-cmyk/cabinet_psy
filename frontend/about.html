@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Découvrez le parcours, la formation et l'approche thérapeutique du Dr. Martin, psychothérapeute à Paris.">
+    <title>À propos - Dr. Martin | Psychothérapeute Paris</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* About Page Specific Styles */
+        .about-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 100px 0 60px;
+            text-align: center;
+        }
+
+        .about-section {
+            padding: 60px 0;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .about-image .experience-badge {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .experience-badge h3 {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .experience-badge p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .about-text p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .signature {
+            font-family: 'Georgia', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-top: 30px;
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            background: var(--light);
+            padding: 60px 0;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+
+        .timeline-item {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+
+        .timeline-content h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .timeline-content .date {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Approach Section */
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .approach-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
+        }
+
+        .approach-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .approach-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .approach-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .approach-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .approach-card p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Qualifications Section */
+        .qualifications {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 60px 0;
+        }
+
+        .qualifications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .qualification-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .qualification-item i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .qualification-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .qualification-item p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Values Section */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .value-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .value-card h3 {
+            margin-bottom: 10px;
+        }
+
+        /* Publications Section */
+        .publications {
+            background: var(--light);
+            padding: 60px 0;
+        }
+
+        .publications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .publication-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .publication-card .publication-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .publication-card .publication-journal {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .publication-card .publication-year {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-dot {
+                left: 30px;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">Dr. Martin</a>
+                <span class="badge">Psychothérapeute</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="about.html" class="active">À propos</a></li>
+                <li><a href="appointments.html">Rendez-vous</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <section class="about-hero">
+        <div class="container">
+            <h1>À propos de moi</h1>
+            <p>15 ans d'expérience au service de votre bien-être mental</p>
+        </div>
+    </section>
+
+    <!-- Main About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://via.placeholder.com/500x600" alt="Dr. Martin">
+                    <div class="experience-badge">
+                        <h3>15+</h3>
+                        <p>Années d'expérience</p>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <h2>Dr. Philippe Martin</h2>
+                    <p>Psychothérapeute diplômé de l'Université Paris Descartes, je consacre ma carrière à accompagner les personnes en quête de mieux-être et d'équilibre. Mon parcours m'a permis de développer une approche unique, alliant rigueur scientifique et écoute humaine.</p>
+                    <p>Ma pratique s'inscrit dans une démarche intégrative : je puise dans différentes approches thérapeutiques (TCC, psychanalyse humaniste, thérapie systémique) pour offrir un accompagnement personnalisé à chaque patient.</p>
+                    <p>Au-delà des techniques, je crois profondément en la force de la relation thérapeutique. Mon cabinet est un espace sécurisé où vous pouvez explorer librement vos difficultés, sans jugement.</p>
+                    <div class="signature">
+                        <i class="fas fa-quote-left"></i> Écouter, comprendre, accompagner
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Mon parcours</h2>
+                <p>Les étapes clés de ma formation et de ma carrière</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="date">2020 - Aujourd'hui</span>
+                        <h3>Cabinet libéral - Paris</h3>
+                        <p>Installation en cabinet libéral dans le 9ème arrondissement de Paris. Accompagnement d'adultes, adolescents et couples.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="date">2015 - 2020</span>
+                        <h3>Psychothérapeute - Hôpital Sainte-Anne</h3>
+                        <p>Prise en charge des troubles anxieux et dépressifs en service hospitalier. Formation continue en thérapie cognitive et comportementale.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="date">2010 - 2015</span>
+                        <h3>Doctorat en Psychologie Clinique</h3>
+                        <p>Thèse sur "Les stratégies d'adaptation face au stress professionnel". Université Paris Descartes.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="date">2005 - 2010</span>
+                        <h3>Master en Psychologie Clinique</h3>
+                        <p>Formation à l'Université Lumière Lyon 2. Stage au CHS Le Vinatier.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Approach Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Mon approche thérapeutique</h2>
+                <p>Une méthode intégrative adaptée à chaque personne</p>
+            </div>
+            <div class="approach-grid">
+                <div class="approach-card">
+                    <div class="approach-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Thérapie Cognitive et Comportementale (TCC)</h3>
+                    <p>Identifier et modifier les pensées et comportements problématiques pour retrouver une meilleure qualité de vie.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="approach-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3>Approche Humaniste</h3>
+                    <p>Favoriser l'épanouissement personnel et la réalisation de soi dans un cadre bienveillant et empathique.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="approach-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Thérapie Systémique</h3>
+                    <p>Comprendre la personne dans son système relationnel (famille, travail, couple) pour favoriser les changements.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="approach-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Pleine Conscience</h3>
+                    <p>Intégration de techniques de méditation et de pleine conscience pour développer la présence à soi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Qualifications Section -->
+    <section class="qualifications">
+        <div class="container">
+            <div class="section-header" style="color: white;">
+                <h2>Formations et certifications</h2>
+                <p>Une expertise constamment renouvelée</p>
+            </div>
+            <div class="qualifications-grid">
+                <div class="qualification-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Psychologue clinicien</h3>
+                    <p>Diplôme d'État (2010)</p>
+                </div>
+                <div class="qualification-item">
+                    <i class="fas fa-certificate"></i>
+                    <h3>Psychothérapeute</h3>
+                    <p>Agrément ARS (2015)</p>
+                </div>
+                <div class="qualification-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Spécialiste TCC</h3>
+                    <p>Certification AFTCC (2018)</p>
+                </div>
+                <div class="qualification-item">
+                    <i class="fas fa-hand-sparkles"></i>
+                    <h3>EMDR niveau 2</h3>
+                    <p>Formation complète (2021)</p>
+                </div>
+                <div class="qualification-item">
+                    <i class="fas fa-brain"></i>
+                    <h3>Neurosciences</h3>
+                    <p>DU en neurosciences cliniques (2019)</p>
+                </div>
+                <div class="qualification-item">
+                    <i class="fas fa-heartbeat"></i>
+                    <h3>Psychotraumatologie</h3>
+                    <p>DU Université Paris Descartes (2020)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Mes valeurs</h2>
+                <p>Les principes qui guident ma pratique</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Confidentialité absolue</h3>
+                    <p>Le secret professionnel est au cœur de ma pratique. Un espace sûr pour vous exprimer librement.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h3>Bienveillance</h3>
+                    <p>Un accueil sans jugement, dans le respect de votre rythme et de votre histoire.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-balance-scale"></i>
+                    <h3>Éthique</h3>
+                    <p>Une pratique rigoureuse conforme aux codes de déontologie et aux recommandations scientifiques.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Respect de l'individu</h3>
+                    <p>Chaque personne est unique. Mon accompagnement s'adapte à vos besoins spécifiques.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section class="publications">
+        <div class="container">
+            <div class="section-header">
+                <h2>Publications et interventions</h2>
+                <p>Partager les connaissances pour mieux comprendre</p>
+            </div>
+            <div class="publications-grid">
+                <div class="publication-card">
+                    <div class="publication-title">"L'anxiété au travail : prévenir et agir"</div>
+                    <div class="publication-journal">Revue de Psychologie du Travail, 2023</div>
+                    <div class="publication-year">Article scientifique</div>
+                </div>
+                <div class="publication-card">
+                    <div class="publication-title">"La thérapie cognitive auprès des adolescents"</div>
+                    <div class="publication-journal">Journal de Thérapie Comportementale, 2022</div>
+                    <div class="publication-year">Chapitre d'ouvrage</div>
+                </div>
+                <div class="publication-card">
+                    <div class="publication-title">Conférence : "Mieux vivre avec ses émotions"</div>
+                    <div class="publication-journal">Forum Santé Mentale Paris, 2023</div>
+                    <div class="publication-year">Intervention</div>
+                </div>
+                <div class="publication-card">
+                    <div class="publication-title">"Stress post-traumatique : approches thérapeutiques"</div>
+                    <div class="publication-journal">Congrès National de Psychologie, 2021</div>
+                    <div class="publication-year">Communication orale</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="container">
+            <h2>Prêt à faire le premier pas ?</h2>
+            <p>Je serai ravi de vous accueillir dans mon cabinet pour une première rencontre</p>
+            <a href="appointments.html" class="btn btn-primary btn-large">Prendre rendez-vous</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Dr. Martin</h3>
+                    <p>Psychothérapeute depuis 15 ans, je vous accueille dans un cadre bienveillant et confidentiel.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 rue de la Paix, 75001 Paris</p>
+                    <p><i class="fas fa-phone"></i> 01 23 45 67 89</p>
+                    <p><i class="fas fa-envelope"></i> contact@cabinet-psy.fr</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Horaires</h3>
+                    <p>Lundi - Vendredi: 9h - 20h</p>
+                    <p>Samedi: 9h - 13h</p>
+                    <p>Dimanche: Fermé</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Informations</h3>
+                    <p><i class="fas fa-id-card"></i> ADELI: 751234567</p>
+                    <p><i class="fas fa-file-invoice"></i> N° SIRET: 123 456 789 00012</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Cabinet de Psychothérapie Dr. Martin - Tous droits réservés</p>
+                <p><a href="#">Mentions légales</a> | <a href="#">Confidentialité</a> | <a href="#">CGU</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
